@@ -1,0 +1,6 @@
+{
+  "required": "Please provide a valid {{field}}",
+  "min": "Please provide a {{field}} min on {{argument.0}} characters",
+  "unique": "The {{field}} is duplicated. Please change the new one",
+  "email": "Please provide a valid email on {{field}}"
+}
