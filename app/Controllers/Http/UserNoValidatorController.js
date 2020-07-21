@@ -4,7 +4,7 @@ const { validate, sanitize } = use("Validator");
 const User = use("App/Models/User");
 
 class UserNoValidatorController {
-  async store({ request, response }) {
+  async store({ request, response, antl }) {
     // Sanitizing user input
     const sanitizationRules = {
       email: "normalize_email",
@@ -17,7 +17,30 @@ class UserNoValidatorController {
       email: "required|email|unique:users,email",
       password: "required|min:3",
     };
-    const validation = await validate(sanitizedData, rules);
+    const messages = {
+      "username.required": antl.formatMessage("validations.required", {
+        field: antl.formatMessage("attributes.username"),
+      }),
+      "username.unique": antl.formatMessage("validations.unique", {
+        field: antl.formatMessage("attributes.username"),
+      }),
+      "email.required": antl.formatMessage("validations.required", {
+        field: antl.formatMessage("attributes.email"),
+      }),
+      "email.unique": antl.formatMessage("validations.unique", {
+        field: antl.formatMessage("attributes.unique"),
+      }),
+      "email.email": antl.formatMessage("validations.unique", {
+        field: antl.formatMessage("attributes.email"),
+      }),
+      "password.required": antl.formatMessage("validations.required", {
+        field: antl.formatMessage("attributes.password"),
+      }),
+      "password.min": antl.formatMessage("validations.min", {
+        field: antl.formatMessage("attributes.password"),
+      }),
+    };
+    const validation = await validate(sanitizedData, rules, messages);
 
     if (validation.fails()) {
       return response.status(422).json({
